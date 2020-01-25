@@ -1,0 +1,116 @@
+/*
+File:               xxxxxx .sql
+Author:             Hellen Harry
+Oracle Username:    xxxx
+Description:    Using the cursor approach to write a script which will print 
+                mailing labels for customers 
+                who own a car of a given make, model and year 
+                (prompt the user to enter the values for them)
+                Each label must be four lines high.
+                Print the input parameters on the first label 
+                (two lines for the make, model and year and two empty lines)
+                Print each label on three lines with one blank line between each
+                label.
+                
+The script's output should look like the following:
+
+JAGUAR XKR
+2015
+
+        
+Jose Andrade
+3044 Drumloch Ave
+Oakville On L6M5H8
+        
+Tyler Abbott
+60 Talbot St.
+St Thomas Ontario N5P1A4
+
+Chris Banyard
+Levinson
+Toronto On M1C3K3
+*/SET LINESIZE 132
+
+SET PAGESIZE 255
+
+/* 
+------------output results -start------------
+
+ACURA RSX
+2013
+
+
+GARY HALBIG
+369 SUMMERCHASE DR
+OAKVILLE
+ON
+L6H5T7 
+
+
+CARL EDWARDS
+88 OLYMPIA
+MISSISSAUGA
+ON
+L6X2V7 
+
+CARL EDWARDS
+88 OLYMPIA
+MISSISSAUGA
+ON
+L6X2V7 
+
+
+
+
+------------output results -end--------------
+*/
+
+SET VERIFY ON;
+
+SET SERVEROUTPUT ON;
+
+ACCEPT p_carmake PROMPT 'Please Enter car make'
+
+ACCEPT p_carmodel PROMPT 'Please Enter car model'
+
+ACCEPT p_caryear PROMPT 'Please Enter the year'
+
+DECLARE
+    CURSOR cust_mail_address IS SELECT
+        cust.custname
+       ,custstreet
+       ,custcity
+       ,custprovince
+       ,custpostal
+                                FROM
+        customer cust
+        INNER JOIN car ca ON cust.custname = ca.custname
+                                WHERE
+        upper('&p_carmake') = upper(carmake)
+        AND   upper('&p_carmodel') = upper(carmodel)
+        AND   '&p_caryear' = caryear;
+
+BEGIN
+    dbms_output.put_line(upper('&p_carmake')
+    || upper(' &p_carmodel')
+    || chr(10)
+    || '&p_caryear'
+    || chr(10)
+    || chr(10) );
+
+    FOR i IN cust_mail_address LOOP
+        dbms_output.put_line(i.custname
+        || chr(10)
+        || i.custstreet
+        || chr(10)
+        || i.custcity
+        || chr(10)
+        || i.custprovince
+        || chr(10)
+        || i.custpostal
+        || chr(10) );
+    END LOOP;
+
+END;
+/
+
