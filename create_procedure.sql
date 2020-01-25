@@ -20,10 +20,8 @@ Description: 1.Writing a stored procedure that accepts
             the result should show all the customers whose name begins with A,
             B, C and D. 
             If "A" and "Z" is entered the result should show all customers.
-        Use a cursor and include appropriate exception handling.
-Hint:
-See REGEXP_LIKE operator on how to find the names that begin with letters
-included between two given values.
+             Using a cursor as well as including appropriate exception handling.
+            using  REGEXP_LIKE 
                 
 */
 /* 
